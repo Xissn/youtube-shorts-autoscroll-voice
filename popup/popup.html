@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shorts Auto & Voice</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="popup-container">
+    <!-- Header -->
+    <header class="header">
+      <div class="header-logo">
+        <div class="logo-badge">
+          <svg viewBox="0 0 24 24" class="logo-icon"><path d="M10 14.65v-5.3L15 12l-5 2.65zm7.77-4.33-1.2-1.2C15.7 8.24 14.47 7.7 13.11 7.42l.39-1.96C15.35 5.8 17 6.54 18.27 7.73l-.5.59zM12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"/></svg>
+        </div>
+        <div>
+          <h1 class="title">Shorts Assistant</h1>
+          <p class="subtitle">Автопрокрутка и Голос</p>
+        </div>
+      </div>
+      <span class="version-tag">v1.0</span>
+    </header>
+
+    <!-- Main Switches -->
+    <section class="section">
+      <div class="setting-item">
+        <div class="setting-text">
+          <div class="setting-title">
+            <span class="setting-icon">🔄</span>
+            Автопрокрутка
+          </div>
+          <div class="setting-desc">Листать после завершения видео</div>
+        </div>
+        <label class="switch">
+          <input type="checkbox" id="autoScrollEnabled">
+          <span class="slider"></span>
+        </label>
+      </div>
+
+      <div class="setting-item">
+        <div class="setting-text">
+          <div class="setting-title">
+            <span class="setting-icon">🎙️</span>
+            Голосовое управление
+          </div>
+          <div class="setting-desc">Команды "далее", "пропустить"...</div>
+        </div>
+        <label class="switch">
+          <input type="checkbox" id="voiceEnabled">
+          <span class="slider"></span>
+        </label>
+      </div>
+    </section>
+
+    <!-- Detailed Controls -->
+    <section class="section">
+      <div class="form-group">
+        <label for="scrollDelay" class="form-label">
+          <span>⏱️ Задержка перед прокруткой</span>
+          <span id="delayValue" class="badge">0.5 сек</span>
+        </label>
+        <input type="range" id="scrollDelay" min="0" max="3" step="0.5" value="0.5" class="slider-range">
+      </div>
+
+      <div class="form-group">
+        <label for="voiceLanguage" class="form-label">
+          <span>🌐 Язык распознавания</span>
+        </label>
+        <select id="voiceLanguage" class="select-input">
+          <option value="ru-RU">Русский (ru-RU)</option>
+          <option value="en-US">English (en-US)</option>
+        </select>
+      </div>
+    </section>
+
+    <!-- Additional Toggles -->
+    <section class="section">
+      <div class="setting-item compact">
+        <div class="setting-text">
+          <div class="setting-title">🔔 Звуковой сигнал команды</div>
+        </div>
+        <label class="switch small">
+          <input type="checkbox" id="soundFeedback">
+          <span class="slider"></span>
+        </label>
+      </div>
+
+      <div class="setting-item compact">
+        <div class="setting-text">
+          <div class="setting-title">📌 Плавающий виджет на странице</div>
+        </div>
+        <label class="switch small">
+          <input type="checkbox" id="showHud">
+          <span class="slider"></span>
+        </label>
+      </div>
+
+      <div class="setting-item compact">
+        <div class="setting-text">
+          <div class="setting-title">📊 Индикатор прогресса видео</div>
+        </div>
+        <label class="switch small">
+          <input type="checkbox" id="showProgressBar">
+          <span class="slider"></span>
+        </label>
+      </div>
+    </section>
+
+    <!-- Voice Commands List -->
+    <section class="section commands-section">
+      <div class="commands-header" id="toggleCommands">
+        <span>🗣️ Список голосовых команд</span>
+        <svg class="chevron" width="14" height="14" viewBox="0 0 24 24"><path fill="currentColor" d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/></svg>
+      </div>
+      <div class="commands-list" id="commandsList">
+        <div class="command-row">
+          <span class="cmd-action">Следующее:</span>
+          <span class="cmd-words">"далее", "дальше", "пропустить", "скип", "не понравилось", "next", "skip"</span>
+        </div>
+        <div class="command-row">
+          <span class="cmd-action">Предыдущее:</span>
+          <span class="cmd-words">"назад", "обратно", "предыдущее", "back"</span>
+        </div>
+        <div class="command-row">
+          <span class="cmd-action">Пауза / Плей:</span>
+          <span class="cmd-words">"пауза", "стоп", "играй", "плей"</span>
+        </div>
+        <div class="command-row">
+          <span class="cmd-action">Лайк:</span>
+          <span class="cmd-words">"лайк", "нравится", "класс"</span>
+        </div>
+        <div class="command-row">
+          <span class="cmd-action">Заново:</span>
+          <span class="cmd-words">"заново", "повтор", "еще раз"</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Mic Permission Prompt Button -->
+    <div class="footer">
+      <button id="btnTestMic" class="btn-primary">
+        <span>🎙️ Проверить микрофон</span>
+      </button>
+      <div id="micStatusNote" class="mic-status-note">Нажмите для проверки доступа к микрофону</div>
+    </div>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>

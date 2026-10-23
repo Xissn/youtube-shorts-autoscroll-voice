@@ -1,0 +1,287 @@
+/* YouTube Shorts Auto-Scroll & Voice Control Styles */
+
+#shorts-helper-hud {
+  position: fixed;
+  top: 70px;
+  right: 24px;
+  z-index: 9999999;
+  font-family: 'Roboto', 'YouTube Sans', Arial, sans-serif;
+  color: #ffffff;
+  user-select: none;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Glassmorphism Container */
+.sh-hud-box {
+  background: rgba(18, 18, 20, 0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 14px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5), 0 0 1px rgba(255, 255, 255, 0.2);
+  padding: 10px 14px;
+  min-width: 250px;
+  max-width: 320px;
+  transition: all 0.25s ease;
+}
+
+/* Header */
+.sh-hud-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 8px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.sh-hud-title {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #ff334b;
+  letter-spacing: 0.3px;
+}
+
+.sh-hud-title svg {
+  width: 16px;
+  height: 16px;
+  fill: currentColor;
+}
+
+.sh-hud-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.sh-icon-btn {
+  background: transparent;
+  border: none;
+  color: rgba(255, 255, 255, 0.6);
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s ease;
+}
+
+.sh-icon-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+}
+
+/* Switches Row */
+.sh-control-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 5px 0;
+  font-size: 12px;
+  color: #e0e0e0;
+}
+
+.sh-control-label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 500;
+}
+
+/* Custom Toggle Switch */
+.sh-switch {
+  position: relative;
+  display: inline-block;
+  width: 36px;
+  height: 20px;
+}
+
+.sh-switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.sh-slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(255, 255, 255, 0.2);
+  transition: 0.25s;
+  border-radius: 20px;
+}
+
+.sh-slider:before {
+  position: absolute;
+  content: "";
+  height: 14px;
+  width: 14px;
+  left: 3px;
+  bottom: 3px;
+  background-color: white;
+  transition: 0.25s;
+  border-radius: 50%;
+}
+
+input:checked + .sh-slider {
+  background-color: #ff2a44;
+}
+
+input:checked + .sh-slider:before {
+  transform: translateX(16px);
+}
+
+/* Voice Indicator Banner */
+.sh-voice-status {
+  margin-top: 8px;
+  padding: 6px 10px;
+  border-radius: 8px;
+  font-size: 11px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.sh-voice-status.listening {
+  background: rgba(46, 204, 113, 0.12);
+  border-color: rgba(46, 204, 113, 0.35);
+  color: #a3e9b8;
+}
+
+.sh-voice-status.permission-needed {
+  background: rgba(241, 196, 15, 0.15);
+  border-color: rgba(241, 196, 15, 0.4);
+  color: #f7dc6f;
+  animation: sh-pulse-border 2s infinite;
+}
+
+.sh-voice-status.disabled {
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.sh-mic-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #7f8c8d;
+  flex-shrink: 0;
+}
+
+.sh-voice-status.listening .sh-mic-dot {
+  background: #2ecc71;
+  box-shadow: 0 0 8px #2ecc71;
+  animation: sh-blink 1.5s infinite;
+}
+
+.sh-voice-status.permission-needed .sh-mic-dot {
+  background: #f1c40f;
+  box-shadow: 0 0 6px #f1c40f;
+}
+
+.sh-transcript-preview {
+  margin-top: 6px;
+  font-size: 11px;
+  color: #38ef7d;
+  font-style: italic;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-height: 15px;
+}
+
+/* Minimized HUD Pill State */
+#shorts-helper-hud.minimized .sh-hud-box {
+  padding: 6px 10px;
+  min-width: auto;
+  border-radius: 30px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+}
+
+#shorts-helper-hud.minimized .sh-hud-content {
+  display: none;
+}
+
+#shorts-helper-hud.minimized .sh-hud-header {
+  margin-bottom: 0;
+  padding-bottom: 0;
+  border-bottom: none;
+}
+
+/* Toast Floating Notification */
+.sh-toast-notification {
+  position: fixed;
+  bottom: 80px;
+  left: 50%;
+  transform: translateX(-50%) translateY(20px);
+  background: rgba(15, 15, 20, 0.92);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 51, 75, 0.4);
+  color: #ffffff;
+  padding: 10px 20px;
+  border-radius: 30px;
+  font-size: 13px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6), 0 0 20px rgba(255, 42, 68, 0.25);
+  z-index: 10000000;
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.sh-toast-notification.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+.sh-toast-icon {
+  font-size: 16px;
+}
+
+/* Auto-Scroll Video Progress Bar */
+.sh-video-progress-container {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.15);
+  z-index: 9999;
+  pointer-events: none;
+}
+
+.sh-video-progress-fill {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, #ff416c, #ff4b2b);
+  box-shadow: 0 0 8px #ff416c;
+  transition: width 0.1s linear;
+}
+
+@keyframes sh-blink {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(0.85); }
+}
+
+@keyframes sh-pulse-border {
+  0%, 100% { border-color: rgba(241, 196, 15, 0.4); }
+  50% { border-color: rgba(241, 196, 15, 0.9); }
+}
