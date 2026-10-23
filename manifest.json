@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "YouTube Shorts: Автопрокрутка и Голосовое управление",
   "short_name": "Shorts Auto & Voice",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Автоматически листает Shorts после окончания видео. Голосовые команды: 'далее', 'пропустить', 'назад', 'пауза' и др.",
   "icons": {
     "16": "icons/icon16.png",

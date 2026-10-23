@@ -222,11 +222,11 @@ input:checked + .sh-slider:before {
   border-bottom: none;
 }
 
-/* Toast Floating Notification - Позиция: слева над кнопкой "Подписаться" */
+/* Toast Floating Notification - Позиция: слева на пустом месте над кнопкой "Подписаться" */
 .sh-toast-notification {
   position: fixed;
-  bottom: 160px;
-  left: max(20px, calc(50vw - 215px));
+  bottom: 150px;
+  left: 60px;
   transform: translateY(10px);
   background: rgba(15, 15, 20, 0.94);
   backdrop-filter: blur(14px);

@@ -117,31 +117,65 @@
   }
 
   /**
-   * Позиционирование всплывающего уведомления слева над кнопкой "Подписаться"
+   * Поиск кнопки "Подписаться" или блока автора канала
+   */
+  function findSubscribeElement() {
+    // 1. Поиск кнопки по содержимому текста
+    const buttons = document.querySelectorAll('ytd-shorts button, ytd-reel-video-renderer button, #subscribe-button button');
+    for (const btn of buttons) {
+      const text = (btn.textContent || '').trim().toLowerCase();
+      if ((text.includes('подписаться') || text.includes('subscribe') || text.includes('вы подписаны') || text.includes('subscribed')) && btn.offsetParent !== null) {
+        return btn;
+      }
+    }
+
+    // 2. По селекторам контейнера автора и кнопки подписки
+    const activeRenderer = document.querySelector('ytd-reel-video-renderer[is-active]');
+    const root = activeRenderer || document;
+    const candidates = [
+      '#subscribe-button',
+      'ytd-subscribe-button-renderer',
+      '.ytd-reel-player-header-renderer #subscribe-button',
+      'ytd-reel-player-header-renderer #channel-name',
+      '#channel-container'
+    ];
+
+    for (const sel of candidates) {
+      const el = root.querySelector(sel);
+      if (el && el.offsetParent !== null) {
+        return el;
+      }
+    }
+
+    return null;
+  }
+
+  /**
+   * Позиционирование всплывающего уведомления слева в пустой зоне над кнопкой "Подписаться"
    */
   function positionToastAboveSubscribe(toast) {
     try {
-      const activeRenderer = document.querySelector('ytd-reel-video-renderer[is-active]');
-      const subBtn = activeRenderer
-        ? activeRenderer.querySelector('#subscribe-button, ytd-subscribe-button-renderer, .ytd-reel-player-header-renderer')
-        : document.querySelector('#subscribe-button, ytd-subscribe-button-renderer');
-
-      if (subBtn && subBtn.offsetParent !== null) {
-        const rect = subBtn.getBoundingClientRect();
-        if (rect.left > 0 && rect.top > 0) {
-          toast.style.left = Math.max(16, rect.left) + 'px';
-          toast.style.bottom = Math.max(90, window.innerHeight - rect.top + 16) + 'px';
+      const subEl = findSubscribeElement();
+      if (subEl) {
+        const rect = subEl.getBoundingClientRect();
+        if (rect.left >= 0 && rect.top > 0) {
+          // Точно над кнопкой "Подписаться", прижато к левой части
+          toast.style.left = `${Math.max(48, rect.left)}px`;
+          toast.style.bottom = `${Math.max(120, window.innerHeight - rect.top + 16)}px`;
+          toast.style.right = 'auto';
+          toast.style.top = 'auto';
           return;
         }
       }
-
-      // Fallback: левее центра экрана на пустом месте над панелью автора
-      toast.style.left = 'max(20px, calc(50vw - 215px))';
-      toast.style.bottom = '160px';
     } catch (e) {
-      toast.style.left = 'max(20px, calc(50vw - 215px))';
-      toast.style.bottom = '160px';
+      // Игнорируем ошибки вычисления геометрии
     }
+
+    // Надежный Fallback: пустое черное пространство слева над зоной подписки
+    toast.style.left = '60px';
+    toast.style.bottom = '150px';
+    toast.style.right = 'auto';
+    toast.style.top = 'auto';
   }
 
   /**
