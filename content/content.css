@@ -222,38 +222,38 @@ input:checked + .sh-slider:before {
   border-bottom: none;
 }
 
-/* Toast Floating Notification */
+/* Toast Floating Notification - Позиция: слева над кнопкой "Подписаться" */
 .sh-toast-notification {
   position: fixed;
-  bottom: 80px;
-  left: 50%;
-  transform: translateX(-50%) translateY(20px);
-  background: rgba(15, 15, 20, 0.92);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 51, 75, 0.4);
+  bottom: 160px;
+  left: max(20px, calc(50vw - 215px));
+  transform: translateY(10px);
+  background: rgba(15, 15, 20, 0.94);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(255, 51, 75, 0.45);
   color: #ffffff;
-  padding: 10px 20px;
-  border-radius: 30px;
-  font-size: 13px;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 12px;
   font-weight: 500;
   display: flex;
   align-items: center;
-  gap: 10px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6), 0 0 20px rgba(255, 42, 68, 0.25);
+  gap: 8px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.65), 0 0 16px rgba(255, 42, 68, 0.2);
   z-index: 10000000;
   opacity: 0;
   pointer-events: none;
-  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: opacity 0.2s ease, transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .sh-toast-notification.show {
   opacity: 1;
-  transform: translateX(-50%) translateY(0);
+  transform: translateY(0);
 }
 
 .sh-toast-icon {
-  font-size: 16px;
+  font-size: 14px;
 }
 
 /* Auto-Scroll Video Progress Bar */

@@ -24,7 +24,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     voiceEnabled: true,
     scrollDelay: 0.5,
     voiceLanguage: 'ru-RU',
-    soundFeedback: true,
+    soundFeedback: false,
     showHud: true,
     showProgressBar: true
   };

@@ -8,7 +8,7 @@ const DEFAULT_SETTINGS = {
   voiceEnabled: true,
   scrollDelay: 0.5, // секунды задержки после окончания видео
   voiceLanguage: 'ru-RU', // ru-RU или en-US
-  soundFeedback: true, // звуковой сигнал подтверждения команды
+  soundFeedback: false, // звуковые сигналы отключены (тихий режим)
   showHud: true, // плавающий мини-виджет на странице Shorts
   showProgressBar: true // полоса прогресса до автопрокрутки
 };

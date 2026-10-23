@@ -12,7 +12,7 @@
     voiceEnabled: true,
     scrollDelay: 0.5,
     voiceLanguage: 'ru-RU',
-    soundFeedback: true,
+    soundFeedback: false,
     showHud: true,
     showProgressBar: true
   };
@@ -110,40 +110,37 @@
   }
 
   /**
-   * Воспроизведение короткого приятного звукового подтверждения
+   * Звуковые сигналы отключены для тихого и комфортного просмотра
    */
   function playBeep(type = 'success') {
-    if (!settings.soundFeedback) return;
-    try {
-      if (!audioCtx) {
-        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-      }
-      if (audioCtx.state === 'suspended') {
-        audioCtx.resume();
-      }
-      const osc = audioCtx.createOscillator();
-      const gain = audioCtx.createGain();
-      osc.connect(gain);
-      gain.connect(audioCtx.destination);
+    return;
+  }
 
-      if (type === 'success') {
-        // Двойной мягкий звоночек
-        osc.frequency.setValueAtTime(587.33, audioCtx.currentTime); // D5
-        osc.frequency.exponentialRampToValueAtTime(880, audioCtx.currentTime + 0.08); // A5
-        gain.gain.setValueAtTime(0.12, audioCtx.currentTime);
-        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.22);
-        osc.start();
-        osc.stop(audioCtx.currentTime + 0.22);
-      } else if (type === 'pause') {
-        osc.frequency.setValueAtTime(440, audioCtx.currentTime);
-        osc.frequency.exponentialRampToValueAtTime(330, audioCtx.currentTime + 0.12);
-        gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
-        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.15);
-        osc.start();
-        osc.stop(audioCtx.currentTime + 0.15);
+  /**
+   * Позиционирование всплывающего уведомления слева над кнопкой "Подписаться"
+   */
+  function positionToastAboveSubscribe(toast) {
+    try {
+      const activeRenderer = document.querySelector('ytd-reel-video-renderer[is-active]');
+      const subBtn = activeRenderer
+        ? activeRenderer.querySelector('#subscribe-button, ytd-subscribe-button-renderer, .ytd-reel-player-header-renderer')
+        : document.querySelector('#subscribe-button, ytd-subscribe-button-renderer');
+
+      if (subBtn && subBtn.offsetParent !== null) {
+        const rect = subBtn.getBoundingClientRect();
+        if (rect.left > 0 && rect.top > 0) {
+          toast.style.left = Math.max(16, rect.left) + 'px';
+          toast.style.bottom = Math.max(90, window.innerHeight - rect.top + 16) + 'px';
+          return;
+        }
       }
+
+      // Fallback: левее центра экрана на пустом месте над панелью автора
+      toast.style.left = 'max(20px, calc(50vw - 215px))';
+      toast.style.bottom = '160px';
     } catch (e) {
-      // Ошибки аудиоконтекста не критичны
+      toast.style.left = 'max(20px, calc(50vw - 215px))';
+      toast.style.bottom = '160px';
     }
   }
 
@@ -163,6 +160,9 @@
       toast.querySelector('.sh-toast-icon').textContent = icon;
       toast.querySelector('.sh-toast-text').textContent = text;
     }
+
+    // Сдвигаем окно левее над кнопкой "Подписаться"
+    positionToastAboveSubscribe(toast);
 
     toast.classList.add('show');
     clearTimeout(toastTimeout);
@@ -286,7 +286,6 @@
 
     if (source === 'voice') {
       showToast('Голос: Далее ⏩', '🎙️');
-      playBeep('success');
     } else if (source === 'auto') {
       showToast('Автопрокрутка ⏩', '🔄');
     }
@@ -357,7 +356,6 @@
     }
 
     showToast('Голос: Назад ⏪', '🎙️');
-    playBeep('success');
     return true;
   }
 
@@ -371,7 +369,6 @@
     if (likeBtn) {
       likeBtn.click();
       showToast('Голос: Лайк ❤️', '👍');
-      playBeep('success');
       return true;
     }
     return false;
@@ -387,11 +384,9 @@
     if (forcePause === true || (forcePause === null && !vid.paused)) {
       vid.pause();
       showToast('Голос: Пауза ⏸️', '⏸️');
-      playBeep('pause');
     } else {
       vid.play();
       showToast('Голос: Воспроизведение ▶️', '▶️');
-      playBeep('success');
     }
   }
 
@@ -405,7 +400,6 @@
     vid.play();
     hasScrolledCurrent = false;
     showToast('Голос: Заново 🔄', '🔁');
-    playBeep('success');
   }
 
   /**
