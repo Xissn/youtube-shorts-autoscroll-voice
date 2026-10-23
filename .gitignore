@@ -1,3 +1,8 @@
+# Archives
+*.zip
+*.tar.gz
+*.rar
+
 # Operating System files
 .DS_Store
 Thumbs.db
